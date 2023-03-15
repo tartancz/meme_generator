@@ -3,7 +3,7 @@ from pathlib import Path
 from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 
-from memes.serializers import ImageSerializer
+from memes.serializers import MemeTemplateSerializer
 
 
 class Command(BaseCommand):
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         with full_path.open(mode="rb") as f:
             file = File(f, name=full_path.name)
             data = {"high_res": file, "name": name}
-            ser = ImageSerializer(data=data)
+            ser = MemeTemplateSerializer(data=data)
             if ser.is_valid():
                 ser.save()
                 self.stdout.write(self.style.SUCCESS(f"Meme with name {name} was successfully created"))

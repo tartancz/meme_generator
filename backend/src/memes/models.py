@@ -13,4 +13,5 @@ class Meme(models.Model):
     bottom_text = models.CharField(max_length=200, blank=True)
     top_text = models.CharField(max_length=200, blank=True)
     private = models.BooleanField(default=True)
+    example = models.BooleanField(default=False)
     template = models.ForeignKey(MemeTemplate, on_delete=models.CASCADE, related_name="memes")

@@ -23,8 +23,8 @@ class MemeSerializer(serializers.ModelSerializer):
 
 
 class GenerateMemeSerializer(serializers.Serializer):
-    top_text = serializers.CharField(max_length=200, allow_blank=True)
-    bottom_text = serializers.CharField(max_length=200, allow_blank=True)
+    top_text = serializers.CharField(max_length=100, allow_blank=True)
+    bottom_text = serializers.CharField(max_length=100, allow_blank=True)
     private = serializers.BooleanField(default=False)
 
     def validate(self, attrs: dict):

@@ -19,3 +19,9 @@ class MemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meme
         fields = ["low_res", "high_res", "bottom_text", "top_text", "example", "private"]
+
+
+class GenerateMemeSerializer(serializers.Serializer):
+    top_text = serializers.CharField(max_length=200)
+    bottom_text = serializers.CharField(max_length=200)
+    private = serializers.BooleanField()

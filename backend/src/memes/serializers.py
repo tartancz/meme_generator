@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .models import MemeTemplate, Meme
 
@@ -22,6 +23,11 @@ class MemeSerializer(serializers.ModelSerializer):
 
 
 class GenerateMemeSerializer(serializers.Serializer):
-    top_text = serializers.CharField(max_length=200)
-    bottom_text = serializers.CharField(max_length=200)
-    private = serializers.BooleanField()
+    top_text = serializers.CharField(max_length=200, allow_blank=True)
+    bottom_text = serializers.CharField(max_length=200, allow_blank=True)
+    private = serializers.BooleanField(default=False)
+
+    def validate(self, attrs: dict):
+        if not attrs.get("bottom_text") and not attrs.get("top_text"):
+            raise ValidationError("One of the fields 'bottom_text, top_text' is required")
+        return attrs

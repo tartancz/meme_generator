@@ -26,7 +26,7 @@ class MemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meme
-        fields = ["low_res", "high_res", "bottom_text", "top_text", "example", "private", "template"]
+        fields = ["low_res", "high_res", "top_text", "bottom_text", "example", "private", "template"]
         read_only_fields = ["low_res", "high_res", "template"]
 
     def validate(self, attrs: dict):

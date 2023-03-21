@@ -15,7 +15,7 @@ def _resize_image(file, width_image=500, height_image=500, keep_aspect_ratio=Tru
     and return object with resized res
     inspiration here: https://stackoverflow.com/questions/71709173/fetch-image-and-crop-before-save-django
     '''
-    filename, format = file.name.split('.')
+    filename, _ = file.name.split('.')
     image = Image.open(file)
     if keep_aspect_ratio:
         image.thumbnail((width_image, height_image), Image.LANCZOS)
@@ -23,9 +23,10 @@ def _resize_image(file, width_image=500, height_image=500, keep_aspect_ratio=Tru
         image = image.resize((width_image, height_image), Image.LANCZOS)
 
     output = BytesIO()
-    image.save(output, format=format, quality=95)
+
+    image.save(output, format="png", quality=95)
     resized_image = InMemoryUploadedFile(output, 'ImageField',
-                                         f"{filename}.{format}", 'image/jpeg',
+                                         f"{filename}.png", 'image/jpeg',
                                          sys.getsizeof(output), None)
     return resized_image
 

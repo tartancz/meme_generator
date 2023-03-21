@@ -3,7 +3,6 @@ from rest_framework.exceptions import ValidationError
 
 from .models import MemeTemplate, Meme
 
-
 class MemeTemplateSerializer(serializers.ModelSerializer):
     high_res = serializers.ImageField(use_url=True)
     low_res = serializers.ImageField(use_url=True, required=False)
@@ -11,6 +10,11 @@ class MemeTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemeTemplate
         fields = ["id", "high_res", "low_res", "name"]
+
+    def validate_high_res(self, field):
+        if field.image.width < 500:
+            raise ValidationError("Image must have width bigger or equal 500px")
+        return field
 
 
 class MemeSerializer(serializers.ModelSerializer):
@@ -20,6 +24,8 @@ class MemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meme
         fields = ["low_res", "high_res", "bottom_text", "top_text", "example", "private"]
+
+
 
 
 class GenerateMemeSerializer(serializers.Serializer):

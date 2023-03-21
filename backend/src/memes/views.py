@@ -1,12 +1,13 @@
-from pathlib import Path
+from uuid import uuid4
 
+from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import MemeTemplate
-from .serializers import MemeTemplateSerializer, GenerateMemeSerializer
+from .serializers import MemeTemplateSerializer, MemeSerializer
 from .utils import Memer
 
 
@@ -19,7 +20,7 @@ class ImageView(mixins.ListModelMixin,
     queryset = MemeTemplate.objects.all()
 
     serializers = {
-        'generate': GenerateMemeSerializer,
+        'generate': MemeSerializer,
         'list': MemeTemplateSerializer,
         'retrieve': MemeTemplateSerializer,
     }
@@ -33,18 +34,20 @@ class ImageView(mixins.ListModelMixin,
         '''
         Will generate new meme
         '''
-
-        ser: GenerateMemeSerializer = self.get_serializer(data=request.data)
+        ser: MemeSerializer = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
         bottom_text = ser.validated_data["bottom_text"]
         top_text = ser.validated_data["top_text"]
-        #getting file
+        # getting file
         meme_template = get_object_or_404(MemeTemplate, pk=pk)
         file = meme_template.high_res.file
-        #creating meme
+        # creating meme
         with Memer(file) as memer:
             memer.generate_meme(bottom_text, top_text)
             image = memer.get_image()
-        with open("pokus.png", 'ab') as bagr:
-            bagr.write(image)
-        return Response({"asd": "asd"})
+        file_image = ContentFile(image, f"{uuid4().hex}.png")
+        if ser.is_valid():
+            ser.save(template=meme_template, high_res=file_image, )
+            return Response(ser.data)
+        else:
+            return Response(ser.errors)

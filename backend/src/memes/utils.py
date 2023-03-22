@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from PIL import ImageDraw, Image, ImageFont
 
+
 if TYPE_CHECKING:
     from PIL.ImageFile import ImageFile
     from PIL.ImageDraw import ImageDraw
@@ -56,7 +57,7 @@ class Memer:
         _, _, _, h = self.draw.textbbox((0, 0), text, font=self.font)
         return h
 
-    def text_wrap(self, text: str, max_width: int | None, spacing: int = 20) -> str:
+    def text_wrap(self, text: str, max_width: int | None = None, spacing: int = 20) -> str:
         '''
         inspiration: https://tutorials.botsfloor.com/putting-text-on-images-using-python-part-2-cfc173c04874
         get text and it will return formatted text with newlines characters that can fit into image
@@ -70,14 +71,14 @@ class Memer:
             return text
         else:
             words = text.split(' ')
-            line = ''
+            line = words.pop(0)
             for i, word in enumerate(words):
+                line += ' '
                 if not self.font.getsize(line + words[i])[0] <= max_width:
                     multiline_text += line + "\n"
                     line = ''
-                line += word + " "
+                line += word
             multiline_text += line
-            print(multiline_text)
         return multiline_text
 
     def generate_meme(self, bottom_text: str, top_text: str):

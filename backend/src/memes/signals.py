@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
-from memes.models import MemeTemplate
+from memes.models import MemeTemplate, Meme
 
 
 def _resize_image(file, width_image=500, height_image=500, keep_aspect_ratio=True):
@@ -32,8 +32,13 @@ def _resize_image(file, width_image=500, height_image=500, keep_aspect_ratio=Tru
 
 
 @receiver(pre_save, sender=MemeTemplate)
-def change_res_photo(sender, instance: MemeTemplate, **kwargs):
+def change_res_photo_MemeTemplate(sender, instance: MemeTemplate, **kwargs):
     if instance.high_res.width > 500 or instance.high_res.height > 500:
         instance.high_res = _resize_image(instance.high_res.file)
     if not instance.low_res.name:
         instance.low_res = _resize_image(instance.high_res.file, 100, 100, keep_aspect_ratio=False)
+
+
+@receiver(pre_save, sender=MemeTemplate)
+def change_res_photo(sender, instance: MemeTemplate, **kwargs):
+    instance.low_res = _resize_image(instance.high_res.file, 100, 100, keep_aspect_ratio=False)

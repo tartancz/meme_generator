@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import MemeTemplate
-from .serializers import MemeTemplateSerializer, MemeSerializer
+from .serializers import MemeTemplateSerializer, MemeSerializer, MemeTemplateRetrieveSerializer
 from .utils import Memer
 
 
@@ -22,7 +22,7 @@ class ImageView(mixins.ListModelMixin,
     serializers = {
         'generate': MemeSerializer,
         'list': MemeTemplateSerializer,
-        'retrieve': MemeTemplateSerializer,
+        'retrieve': MemeTemplateRetrieveSerializer,
     }
 
     def get_serializer_class(self):

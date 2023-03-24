@@ -33,3 +33,12 @@ class MemeSerializer(serializers.ModelSerializer):
         if not attrs.get("bottom_text") and not attrs.get("top_text"):
             raise ValidationError("One of the fields 'bottom_text, top_text' is required")
         return attrs
+
+class MemeTemplateRetrieveSerializer(serializers.ModelSerializer):
+    memes = MemeSerializer(many=True, read_only=True, source='public_memes')
+
+    class Meta:
+        model = MemeTemplate
+        fields = ["id", "high_res", "low_res", "name", "memes"]
+        
+

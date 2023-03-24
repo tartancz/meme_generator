@@ -26,7 +26,7 @@ class MemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meme
-        fields = ["low_res", "high_res", "top_text", "bottom_text", "example", "private", "template"]
+        fields = ["id", "low_res", "high_res", "top_text", "bottom_text", "example", "private", "template"]
         read_only_fields = ["low_res", "high_res", "template"]
 
     def validate(self, attrs: dict):
@@ -34,11 +34,10 @@ class MemeSerializer(serializers.ModelSerializer):
             raise ValidationError("One of the fields 'bottom_text, top_text' is required")
         return attrs
 
+
 class MemeTemplateRetrieveSerializer(serializers.ModelSerializer):
     memes = MemeSerializer(many=True, read_only=True, source='public_memes')
 
     class Meta:
         model = MemeTemplate
         fields = ["id", "high_res", "low_res", "name", "memes"]
-        
-

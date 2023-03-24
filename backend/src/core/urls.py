@@ -22,7 +22,7 @@ from rest_framework import routers
 from memes.views import ImageView
 
 router = routers.DefaultRouter()
-router.register(r"pokus", ImageView)
+router.register(r"memes-template", ImageView, basename="memes-template")
 
 urlpatterns = [path("admin/", admin.site.urls),
                path("", include(router.urls)),

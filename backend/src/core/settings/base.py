@@ -40,11 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     # djangorestframework
     "rest_framework",
+    #cors_header
+    "corsheaders",
     #internal
     "memes",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

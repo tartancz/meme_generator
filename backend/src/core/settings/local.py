@@ -7,6 +7,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'media/')
 
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
